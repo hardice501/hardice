@@ -79,10 +79,9 @@ class IntkeyClient:
             encoded_entries = yaml.safe_load(result)["data"]
 
             return [
-                cbor.loads(base64.b64decode(entry["data"]))
+                (cbor.loads(base64.b64decode(entry["data"])), entry["address"])
                 for entry in encoded_entries
             ]
-
         except BaseException:
             return None
 

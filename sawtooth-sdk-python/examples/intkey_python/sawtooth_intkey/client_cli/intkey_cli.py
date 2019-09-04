@@ -138,10 +138,10 @@ def add_set_parser(subparsers, parent_parser):
         type=str,
         help='name of key to set')
 
-    parser.add_argument(
-        'value',
-        type=int,
-        help='amount to set')
+    # parser.add_argument(
+    #     'value',
+    #     type=int,
+    #     help='amount to set')
 
     parser.add_argument(
         '--url',
@@ -162,7 +162,7 @@ def add_set_parser(subparsers, parent_parser):
 
 
 def do_set(args):
-    name, value, wait = args.name, args.value, args.wait
+    name, value, wait = args.name, 1, args.wait
     client = _get_client(args)
     response = client.set(name, value, wait)
     print(response)
@@ -299,11 +299,16 @@ def add_list_parser(subparsers, parent_parser):
 
 
 def do_list(args):
+    print('string : Transaction address')
     client = _get_client(args, False)
-    results = client.list()
-    for pair in results:
-        for name, value in pair.items():
-            print('{}: {}'.format(name, value))
+    result = client.list()
+    for pair in result:
+        name_dic, address = pair
+        for name in name_dic.items():
+            print('{} : {}'.format(name[0], address))
+    # for pair in results:
+    #     for name in pair.items():
+    #         print('{}'.format(name))
 
 
 def _get_client(args, read_key_file=True):
