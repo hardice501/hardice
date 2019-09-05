@@ -13,21 +13,26 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
+import hashlib
+import logging
+import cbor
+
 from sawtooth_sdk.processor.handler import TransactionHandler
 
 
-class Simple_Smart_contract_TransactionHandler(TransactionHandler):
-    """
-    TransactionHandler is the Abstract Base Class that defines the business
-    logic for a new transaction family.
+LOGGER = logging.getLogger(__name__)
 
-    The family_name, family_versions, and namespaces properties are
-    used by the processor to route processing requests to the handler.
-    """
+FAMILY_NAME = 'ssc'
+
+SSC_ADDRESS_PREFIX = hashlib.sha512(
+    FAMILY_NAME.encode('utf-8')).hexdigest()[0:6]
+
+
+class Simple_Smart_contract_TransactionHandler(TransactionHandler):
 
     @property
     def family_name(self):
-        return 'ssc'
+        return FAMILY_NAME
 
     @property
     def family_versions(self):
@@ -35,14 +40,11 @@ class Simple_Smart_contract_TransactionHandler(TransactionHandler):
 
     @property
     def namespaces(self):
-        return [self._namespace_prefix]
+        return [SSC_ADDRESS_PREFIX]
 
     @property
     def apply(self, transaction, context):
-        """
-        Apply is the single method where all the business logic for a
-        transaction family is defined. The method will be called by the
-        transaction processor upon receiving a TpProcessRequest that the
-        handler understands and will pass in the TpProcessRequest and an
-        initialized instance of the Context type.
-        """
+        header = transaction.header
+        signer = header.signer_public_key
+
+        ssc_payload = 
