@@ -106,11 +106,12 @@ def _validate_verb(verb):
         raise InvalidTransaction('Verb must be "set", "inc", or "dec"')
 
 
-# def _validate_name(name):
-#     if not isinstance(name, str) or len(name) > MAX_NAME_LENGTH:
-#         raise InvalidTransaction(
-#             'Name must be a string of no more than {} characters'.format(
-#                 MAX_NAME_LENGTH))
+def _validate_name(name):
+    # if not isinstance(name, str) or len(name) > MAX_NAME_LENGTH:
+    #     raise InvalidTransaction(
+    #         'Name must be a string of no more than {} characters'.format(
+    #             MAX_NAME_LENGTH))
+    pass
 
 
 def _validate_value(value):

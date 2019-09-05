@@ -38,6 +38,13 @@ from sawtooth_intkey.client_cli.intkey_client import IntkeyClient
 from sawtooth_intkey.client_cli.exceptions import IntKeyCliException
 from sawtooth_intkey.client_cli.exceptions import IntkeyClientException
 
+import subprocess
+
+def dat_read(path):
+    dat_process = subprocess.Popen(["xxd", "-p", '{}'.format(path)], stdout=subprocess.PIPE)
+    dat_string = dat_process.communicate()[0]
+    return dat_string
+
 
 DISTRIBUTION_NAME = 'sawtooth-intkey'
 
