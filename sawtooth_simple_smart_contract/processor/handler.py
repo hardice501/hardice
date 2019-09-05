@@ -13,10 +13,10 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
-import abc
+from sawtooth_sdk.processor.handler import TransactionHandler
 
 
-class Simple_Smart_contract_TransactionHandler(metaclass=abc.ABCMeta):
+class Simple_Smart_contract_TransactionHandler(TransactionHandler):
     """
     TransactionHandler is the Abstract Base Class that defines the business
     logic for a new transaction family.
@@ -25,28 +25,19 @@ class Simple_Smart_contract_TransactionHandler(metaclass=abc.ABCMeta):
     used by the processor to route processing requests to the handler.
     """
 
-    @abc.abstractproperty
+    @property
     def family_name(self):
-        """
-        family_name should return the name of the transaction family that this
-        handler can process, e.g. "intkey"
-        """
+        return 'ssc'
 
-    @abc.abstractproperty
+    @property
     def family_versions(self):
-        """
-        family_versions should return a list of versions this transaction
-        family handler can process, e.g. ["1.0"]
-        """
+        return ['1.0']
 
-    @abc.abstractproperty
+    @property
     def namespaces(self):
-        """
-        namespaces should return a list containing all the handler's
-        namespaces, e.g. ["abcdef"]
-        """
+        return [self._namespace_prefix]
 
-    @abc.abstractmethod
+    @property
     def apply(self, transaction, context):
         """
         Apply is the single method where all the business logic for a
