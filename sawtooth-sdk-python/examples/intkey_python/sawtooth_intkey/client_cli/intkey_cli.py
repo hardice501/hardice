@@ -170,6 +170,10 @@ def add_set_parser(subparsers, parent_parser):
 
 def do_set(args):
     name, value, wait = args.name, 1, args.wait
+    # Error: Error 413: Request Entity Too Large
+    # if name == 'CRS':
+    #     data = dat_read('/home/itsp/workspace/python/hardice/dat/CRS.dat')
+    #     name = data.decode()
     client = _get_client(args)
     response = client.set(name, value, wait)
     print(response)
