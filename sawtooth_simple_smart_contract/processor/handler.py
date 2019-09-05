@@ -16,7 +16,7 @@
 import abc
 
 
-class TransactionHandler(metaclass=abc.ABCMeta):
+class Simple_Smart_contract_TransactionHandler(metaclass=abc.ABCMeta):
     """
     TransactionHandler is the Abstract Base Class that defines the business
     logic for a new transaction family.
