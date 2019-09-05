@@ -52,7 +52,7 @@ setup(
     data_files=data_files,
     entry_points={
         'console_scripts': [
-            'intkey = sawtooth_intkey.client_cli.intkey_cli:main_wrapper',
-            'intkey-tp-python = sawtooth_intkey.processor.main:main'
+            'voting = sawtooth_intkey.client_cli.intkey_cli:main_wrapper',
+            'voting-python = sawtooth_intkey.processor.main:main'
         ]
     })
