@@ -18,9 +18,13 @@ import logging
 import cbor
 
 from sawtooth_sdk.processor.handler import TransactionHandler
+from sawtooth_sdk.processor.exceptions import InvalidTransaction
+from sawtooth_sdk.processor.exceptions import InternalError
 
 
 LOGGER = logging.getLogger(__name__)
+
+VALID_VERBS = 'set'
 
 FAMILY_NAME = 'ssc'
 
@@ -28,7 +32,7 @@ SSC_ADDRESS_PREFIX = hashlib.sha512(
     FAMILY_NAME.encode('utf-8')).hexdigest()[0:6]
 
 def make_ssc_address(tag):
-    return INTKEY_ADDRESS_PREFIX + hashlib.sha512(
+    return SSC_ADDRESS_PREFIX + hashlib.sha512(
         tag.encode('utf-8')).hexdigest()[-64:]
 
 class Simple_Smart_contract_TransactionHandler(TransactionHandler):
@@ -51,7 +55,7 @@ class Simple_Smart_contract_TransactionHandler(TransactionHandler):
 
         state = _get_state_data(tag, context)
 
-        updated_state = _do_intkey(verb, tag, data, state)
+        updated_state = _do_ssc(verb, tag, data, state)
 
         _set_state_data(tag, updated_state, context)
 
@@ -159,51 +163,17 @@ def _do_set(tag, data, state):
                 n=tag,
                 v=state[tag]))
 
-    updated = {k: v for k, v in state.items()}
-    updated[tag] = name
+    for i in range(len(state)):
 
-    return updated
-
-
-def _do_inc(name, value, state):
-    msg = 'Incrementing "{n}" by {v}'.format(n=name, v=value)
-    LOGGER.debug(msg)
-
-    if name not in state:
-        raise InvalidTransaction(
-            'Verb is "inc" but name "{}" not in state'.format(name))
-
-    curr = state[name]
-    incd = curr + value
-
-    if incd > MAX_VALUE:
-        raise InvalidTransaction(
-            'Verb is "inc", but result would be greater than {}'.format(
-                MAX_VALUE))
-
-    updated = {k: v for k, v in state.items()}
-    updated[name] = incd
-
-    return updated
-
-
-def _do_dec(name, value, state):
-    msg = 'Decrementing "{n}" by {v}'.format(n=name, v=value)
-    LOGGER.debug(msg)
-
-    if name not in state:
-        raise InvalidTransaction(
-            'Verb is "dec" but name "{}" not in state'.format(name))
-
-    curr = state[name]
-    decd = curr - value
-
-    if decd < MIN_VALUE:
-        raise InvalidTransaction(
-            'Verb is "dec", but result would be less than {}'.format(
-                MIN_VALUE))
-
-    updated = {k: v for k, v in state.items()}
-    updated[name] = decd
+    updated = {}
+    for index, (key, element) in enumerate(state.items()):
+        if key in updated:
+            updated[key].append(element)
+        else:
+            updated[key] = [element]
+    if tag in updated:
+        updated[tag].append(data)
+    else:
+        updated[tag] = [data]
 
     return updated
