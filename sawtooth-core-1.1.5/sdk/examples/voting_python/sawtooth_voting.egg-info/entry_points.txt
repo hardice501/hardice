@@ -1,0 +1,4 @@
+[console_scripts]
+voting = sawtooth_voting.client_cli.voting_cli:main_wrapper
+voting-tp-python = sawtooth_voting.processor.main:main
+

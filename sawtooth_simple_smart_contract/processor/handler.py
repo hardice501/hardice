@@ -25,7 +25,6 @@ from sawtooth_sdk.processor.exceptions import InternalError
 LOGGER = logging.getLogger(__name__)
 
 VALID_VERBS = 'set'
-
 FAMILY_NAME = 'ssc'
 
 SSC_ADDRESS_PREFIX = hashlib.sha512(
