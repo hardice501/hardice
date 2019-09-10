@@ -1,1 +1,6 @@
+xxd -p cipher0.dat
+
+import cbor
+import base64
+payload = 
 cbor.loads(base64.b64decode(payload))
