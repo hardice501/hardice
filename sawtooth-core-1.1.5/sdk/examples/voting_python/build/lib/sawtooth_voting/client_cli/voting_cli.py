@@ -169,15 +169,29 @@ def add_set_parser(subparsers, parent_parser):
 
 
 def do_set(args):
-    name, value, wait = args.name, 1, args.wait
-    # Error: Error 413: Request Entity Too Large
-    # if name == 'CRS':
-    #     data = dat_read('/home/itsp/workspace/python/hardice/dat/CRS.dat')
-    #     name = data.decode()
-    client = _get_client(args)
-    response = client.set(name, value, wait)
-    print(response)
-
+    print(type(args.name))
+    fp = open("/home/song/hardice/CRS.dat",'rb')
+    CRS = fp.read()
+    scrs = 1
+    fcrs = 2
+    ori_name = args.name
+    while(1):
+        now = CRS[scrs<<20:fcrs<<20]
+        if(len(now) == 0):
+            break
+        scrs += 1
+        fcrs += 1
+        args.name = ori_name+"{}".format(scrs)
+        name, value, wait = str(now),0, args.wait
+        # Error: Error 413: Request Entity Too Large
+        # if name == 'CRS':
+        #     data = dat_read('/home/itsp/workspace/python/hardice/dat/CRS.dat')
+        #     name = data.decode()
+        client = _get_client(args)
+        print(args.name)
+        response = client.set(name, value, wait)
+        print(response)
+    
 
 def add_inc_parser(subparsers, parent_parser):
     message = 'Sends an voting transaction to increment <name> by <value>.'

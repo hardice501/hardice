@@ -115,13 +115,13 @@ def _validate_name(name):
 
 
 def _validate_value(value):
-    if not isinstance(value, int) or value < 0 or value > MAX_VALUE:
-        raise InvalidTransaction(
-            'Value must be an integer '
-            'no less than {i} and no greater than {a}'.format(
-                i=MIN_VALUE,
-                a=MAX_VALUE))
-
+    #if not isinstance(value, int) or value < 0 or value > MAX_VALUE:
+    #    raise InvalidTransaction(
+    #        'Value must be an integer '
+    #        'no less than {i} and no greater than {a}'.format(
+    #            i=MIN_VALUE,
+    #            a=MAX_VALUE))
+    pass
 
 def _get_state_data(name, context):
     address = make_voting_address(name)
