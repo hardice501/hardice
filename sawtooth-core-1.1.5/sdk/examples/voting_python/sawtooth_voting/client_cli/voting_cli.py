@@ -173,14 +173,17 @@ def do_set(args):
     CRS = fp.read()
     scrs = 0
     fcrs = 1
+    origin = args.name
     while(1):
-        now = CRS[scrs<<20:fcrs<<20]
+        now = CRS[scrs<<21:fcrs<<21]
         if(len(now) == 0):
             break
         scrs += 1
         fcrs += 1
         
-        args.name, args.value, wait = str(binascii.hexlify(now)),0, args.wait
+        args.name, args.value, wait = origin + str(scrs), str(binascii.hexlify(now)), args.wait
+
+        print(args.name,len(args.value))
         # Error: Error 413: Request Entity Too Large
         # if name == 'CRS':
         #     data = dat_read('/home/itsp/workspace/python/hardice/dat/CRS.dat')
