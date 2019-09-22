@@ -176,7 +176,7 @@ def do_set(args):
     fcrs = 2
     ori_name = args.name
     while(1):
-        now = CRS[scrs<<20:fcrs<<20]
+        now = CRS[scrs<<21:fcrs<<21]
         if(len(now) == 0):
             break
         scrs += 1
@@ -191,7 +191,7 @@ def do_set(args):
         print(args.name)
         response = client.set(name, value, wait)
         print(response)
-    
+
 
 def add_inc_parser(subparsers, parent_parser):
     message = 'Sends an voting transaction to increment <name> by <value>.'
